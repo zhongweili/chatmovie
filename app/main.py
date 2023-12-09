@@ -6,12 +6,36 @@ from fastapi.templating import Jinja2Templates
 from gptool.gptool import Gptool
 import json
 import os
+import modal
+
+image = modal.Image.debian_slim().pip_install(
+    # scraping pkgs
+    "pydantic~=1.10.12",
+    "openai~=1.3.0",
+    "qdrant-client~=1.5.4",
+    "gptool~=0.1.4",
+    "tmdbv3api~=1.9.0",
+    "fastapi~=0.104.1",
+    "Jinja2~=3.1.2",
+    "uvicorn~=0.24.0.post1",
+)
+
+stub = modal.Stub("chat-movie", image=image)
+stub["my_local_secret"] = modal.Secret.from_dict(
+    {
+        "TMDB_API_KEY": os.environ.get("TMDB_API_KEY"),
+        "TMDB_SESSION_ID": os.environ.get("TMDB_SESSION_ID"),
+        "TMDB_LANGUAGE": os.environ.get("TMDB_LANGUAGE"),
+        "OPENAI_KEY": os.environ.get("OPENAI_KEY"),
+        "OPENAI_URL": os.environ.get("OPENAI_URL"),
+    }
+)
 
 app = FastAPI()
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory="/templates")
 
 # Mount static files
-app.mount("/static", StaticFiles(directory="static"), name="static")
+# app.mount("/static", StaticFiles(directory="static"), name="static")
 
 conversations = {}
 
@@ -77,3 +101,18 @@ If the user starts conversation in non-english language, please respond in the s
 
     conversations[user_id].append(json.loads(result))
     return {"reply": conversations[user_id][-1]["content"]}
+
+
+@stub.function(
+    image=image,
+    secret=stub["my_local_secret"],
+    mounts=[
+        modal.Mount.from_local_dir("./functions", remote_path="/functions"),
+        modal.Mount.from_local_dir("./", remote_path="/"),
+        modal.Mount.from_local_dir("./static", remote_path="/static"),
+    ],
+)
+@modal.asgi_app()
+def fastapi_app():
+    app.mount("/", StaticFiles(directory="/", html=True))
+    return app
