@@ -1,7 +1,0 @@
-fastapi
-uvicorn
-pydantic
-gptool
-tmdbv3api
-Jinja2
-uvicorn
