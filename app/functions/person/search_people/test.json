@@ -1,0 +1,33 @@
+[
+    {
+        "message": "Search for people with name 'Jackie Chan'.",
+        "input": {
+            "query": "Jackie Chan"
+        },
+        "output": {
+            "search_results": [
+                {
+                    "id": 1,
+                    "name": "Jackie Chan",
+                    "known_for_department": "Acting",
+                    "known_for_movies": [
+                        {
+                            "id": 1,
+                            "title": "Mad Max: Fury Road",
+                            "overview": "An example overview of Mad Max: Fury Road.",
+                            "poster_path": "/path_to_poster1.jpg",
+                            "release_date": "2014-06-19"
+                        },
+                        {
+                            "id": 2,
+                            "title": "Mad Max: Beyond Thunderdome",
+                            "overview": "An example overview of Mad Max: Beyond Thunderdome.",
+                            "poster_path": "/path_to_poster2.jpg",
+                            "release_date": "2014-06-19"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+]

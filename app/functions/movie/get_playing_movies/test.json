@@ -1,0 +1,31 @@
+[
+    {
+        "message": "Get a list of movies that are playing in theatres.",
+        "input": {},
+        "output": {
+            "popular": [
+                {
+                    "id": 1,
+                    "title": "Example Movie Title 1",
+                    "overview": "This is an example overview of the first movie.",
+                    "poster_path": "/path_to_poster1.jpg",
+                    "release_date": "2023-12-05"
+                },
+                {
+                    "id": 2,
+                    "title": "Example Movie Title 2",
+                    "overview": "This is an example overview of the second movie.",
+                    "poster_path": "/path_to_poster2.jpg",
+                    "release_date": "2023-11-08"
+                },
+                {
+                    "id": 3,
+                    "title": "Example Movie Title 3",
+                    "overview": "This is an example overview of the third movie.",
+                    "poster_path": "/path_to_poster3.jpg",
+                    "release_date": "2023-2-08"
+                }
+            ]
+        }
+    }
+]
