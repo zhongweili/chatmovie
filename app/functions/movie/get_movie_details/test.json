@@ -1,0 +1,28 @@
+[
+    {
+        "message": "Get the primary details of movie with ID 343611.",
+        "input": {
+            "movie_id": 343611
+        },
+        "output": {
+            "details": {
+                "title": "Example Movie Title",
+                "overview": "This is an example overview of the movie.",
+                "popularity": 10.5
+            }
+        }
+    },
+    {
+        "message": "Get the primary details of movie with ID 567890.",
+        "input": {
+            "movie_id": 567890
+        },
+        "output": {
+            "details": {
+                "title": "Another Example Movie Title",
+                "overview": "This is another example overview of the movie.",
+                "popularity": 8.3
+            }
+        }
+    }
+]
