@@ -1,121 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <title>ChatMovie</title>
+    <link rel="stylesheet" href="static/css/styles.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatmovie</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f7f7f7;
-        }
-
-        #chat-container {
-            width: 100%;
-            max-width: 600px;
-            margin: 0 auto;
-            border: 1px solid #ddd;
-            padding: 20px;
-            background-color: #fff;
-        }
-
-        #chat-log {
-            border: 1px solid #ccc;
-            padding: 10px;
-            height: 200px;
-            overflow-y: auto;
-            margin-bottom: 10px;
-        }
-
-        .chat-message {
-            padding: 5px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .user-message {
-            color: blue;
-        }
-
-        .bot-message {
-            color: green;
-        }
-
-        .chat-input {
-            display: flex;
-        }
-
-        input[type="text"] {
-            flex-grow: 1;
-            padding: 10px;
-            margin-right: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            background-color: #5cb85c;
-            color: white;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #4cae4c;
-        }
-    </style>
+    <!-- Google Fonts Link For Icons -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="/static/js/app.js" defer></script>
 </head>
 
 <body>
+    <!-- Chats container -->
+    <div class="chat-container"></div>
 
-    <div id="chat-container">
-        <h2>chatmovie</h2>
-        <div id="chat-log"></div>
-        <div class="chat-input">
-            <input type="text" id="user-input" placeholder="Type a message...">
-            <button onclick="sendMessage()">send</button>
-            <button onclick="clearChat()">clear</button>
+    <!-- Typing container -->
+    <div class="typing-container">
+        <div class="typing-content">
+            <div class="typing-textarea">
+                <textarea id="chat-input" spellcheck="false" placeholder="Enter a prompt here" required></textarea>
+                <span id="send-btn" class="material-symbols-rounded">send</span>
+            </div>
+            <div class="typing-controls">
+                <span id="theme-btn" class="material-symbols-rounded">light_mode</span>
+                <span id="delete-btn" class="material-symbols-rounded">delete</span>
+            </div>
         </div>
     </div>
-
-    <script>
-        function appendMessage(cls, text) {
-            const chatLog = document.getElementById('chat-log');
-            const msgDiv = document.createElement('div');
-            msgDiv.className = `chat-message ${cls}`;
-            msgDiv.textContent = text;
-            chatLog.appendChild(msgDiv);
-            chatLog.scrollTop = chatLog.scrollHeight;
-        }
-
-        async function sendMessage() {
-            const userInput = document.getElementById('user-input');
-            const message = userInput.value;
-            appendMessage('user-message', `User: ${message}`);
-            userInput.value = '';
-            userInput.focus();
-
-            // Send the message to the server
-            const response = await fetch('/send-message', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ user_input: message })
-            });
-
-            const data = await response.json();
-            appendMessage('bot-message', `Bot: ${data.bot_response}`);
-        }
-
-        function clearChat() {
-            document.getElementById('chat-log').innerHTML = '';
-        }
-
-    </script>
-
 </body>
 
 </html>

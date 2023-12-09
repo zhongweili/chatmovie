@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from fastapi.templating import Jinja2Templates
@@ -11,7 +11,7 @@ app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 
 # Mount static files
-# app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 conversations = {}
 
@@ -25,7 +25,8 @@ print("indexing completed")
 
 
 class SendMessage(BaseModel):
-    user_input: str
+    message: str
+    userId: str
 
 
 class ClearChat(BaseModel):
@@ -49,8 +50,8 @@ async def clear_chat(request: ClearChat):
 @app.post("/send-message/")
 async def send_message(request: SendMessage):
     print(request)
-    user_id = "default_user"
-    message = request.user_input
+    user_id = request.userId
+    message = request.message
 
     if user_id not in conversations:
         conversations[user_id] = [
@@ -75,4 +76,4 @@ If the user starts conversation in non-english language, please respond in the s
             print(message.tool_calls)
 
     conversations[user_id].append(json.loads(result))
-    return JSONResponse(content={"bot_response": conversations[user_id][-1]["content"]})
+    return {"reply": conversations[user_id][-1]["content"]}
